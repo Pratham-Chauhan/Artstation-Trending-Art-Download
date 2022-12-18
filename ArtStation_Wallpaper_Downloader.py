@@ -96,7 +96,10 @@ def download_art(art_hash):
     art_url ="https://www.artstation.com/projects/%s.json"%art_hash
     x2 = r.get(art_url)
 
-    img_url = x2.json()['assets']
+    jjson = x2.json()
+    img_title = jjson['title']
+
+    img_url = jjson['assets']
     i_urls = []
     for each in img_url:
     #     print(each['has_embedded_player'])
@@ -115,13 +118,19 @@ def download_art(art_hash):
     # confirm = input('Want to Downlaod Art?')
     # if confirm in ['n', 'N']: return
    
-    img_name = 'image1.jpg'#rn_art['title']+'.jpg' 
+    img_name = 'aa.jpg' #rn_art['title']+'.jpg' 
 
     x = r.get(dl_img_url)
     if x.status_code == 200:
         with open('./art/'+img_name,'wb') as img_dl:
             img_dl.write(x.content)
+
         set_wallpaper(img_name)
+
+        if input('Save it? ').lower() == 'y':
+            with open(f'./{img_title}.jpg','wb') as img_dl:
+                img_dl.write(x.content)
+
         
     else: print('Unable to Download Art!')
     
